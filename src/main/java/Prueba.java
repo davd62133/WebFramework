@@ -1,8 +1,10 @@
+import Annotationes.WebClass;
 import Annotationes.WebGet;
 import Server.HttpServer;
 
 import java.io.IOException;
 
+@WebClass
 public class Prueba {
     public static void main(String args[]){
         try {

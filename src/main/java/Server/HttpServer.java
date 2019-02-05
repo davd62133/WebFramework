@@ -1,6 +1,8 @@
 package Server;
 import Annotationes.WebClass;
 import Annotationes.WebGet;
+import org.reflections.Reflections;
+import sun.reflect.Reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -20,6 +22,13 @@ public class HttpServer {
             System.exit(1);
         }
 
+        Class<?> cl2 = null;
+        Reflections reflection = new Reflections();
+        for(Class<?> cl : reflection.getTypesAnnotatedWith(WebClass.class)){
+            //System.out.println(cl.getSimpleName());
+            cl2 = cl;
+        }
+
         Socket clientSocket = null;
         while (true) {
             try {
@@ -29,7 +38,7 @@ public class HttpServer {
                 System.err.println("Accept failed.");
                 System.exit(1);
             }
-            MultiThread multiThread = new MultiThread(clientSocket, args);
+            MultiThread multiThread = new MultiThread(clientSocket, cl2);
             multiThread.start();
         }
     }
@@ -38,9 +47,11 @@ public class HttpServer {
 class MultiThread extends Thread{
     Socket socket;
     String[] args;
-    public MultiThread(Socket socket, String[] args){
+    Class<?> cl;
+    public MultiThread(Socket socket, Class<?> cl){
         this.socket = socket;
         this.args = args;
+        this.cl = cl;
     }
     static String getResource(String rsc) {
         String val = "";
@@ -64,9 +75,8 @@ class MultiThread extends Thread{
 
     public Method isAnnotationPresent(String path) throws ClassNotFoundException {
         Method method = null;
-        for (Method m : Class.forName(args[0]).getMethods()){
+        for (Method m : cl.getMethods()){
             if(m.isAnnotationPresent(WebGet.class) && m.getAnnotation(WebGet.class).value().equals(path)){
-                System.out.println("NETROOO");
                 method = m;
             }
         }
