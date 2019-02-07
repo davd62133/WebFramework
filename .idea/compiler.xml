@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="WebFrame" />
-        <module name="WebFramework" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="WebFrame" target="7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
