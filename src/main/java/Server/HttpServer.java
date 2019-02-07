@@ -1,22 +1,17 @@
 package Server;
 import Annotationes.WebClass;
-import Annotationes.WebGet;
 import org.reflections.Reflections;
-import sun.reflect.Reflection;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.*;
 import java.io.*;
-import java.nio.file.Files;
 
+/**
+ * The Http Server
+ */
 public class HttpServer {
-    public static void main(String[] args) throws IOException {
-        //System.out.println(MultiThread.getResource("descarga.png"));
+    public static void main(int port, String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(/**new Integer(System.getenv("PORT"))**/35000);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             System.err.println("Could not listen on port: 35000.");
             System.exit(1);
@@ -25,7 +20,6 @@ public class HttpServer {
         Class<?> cl = null;
         Reflections reflection = new Reflections();
         for(Class<?> cl2 : reflection.getTypesAnnotatedWith(WebClass.class)){
-            //System.out.println(cl.getSimpleName());
             cl = cl2;
         }
 

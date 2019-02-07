@@ -7,7 +7,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Multi Solictud of coneccions
+ */
 public class MultiThread extends Thread {
     Socket socket;
     String[] args;
@@ -19,7 +24,11 @@ public class MultiThread extends Thread {
         this.cl = cl;
     }
 
-
+    /**
+     * Returns a method if exists with the annotation and the path
+     * @param path the path to the app
+     * @return the method, or ull if it doesnt exist
+     */
     public Method isAnnotationPresent(String path) {
         Method method = null;
         for (Method m : cl.getMethods()) {
@@ -28,6 +37,24 @@ public class MultiThread extends Thread {
             }
         }
         return method;
+    }
+
+    /**
+     * The map of the parametrs with there values
+     * @param parameters string of all the ingformacion (URL)
+     * @return Map<String, object>
+     */
+    public static Map<String, Object> getParametersMap(String parameters)
+    {
+        String[] params = parameters.split("&");
+        Map<String, Object> map = new HashMap<String, Object>();
+        for (String param : params)
+        {
+            String name = param.split("=")[0];
+            String value = param.split("=")[1];
+            map.put(name, value);
+        }
+        return map;
     }
 
 
@@ -39,9 +66,16 @@ public class MultiThread extends Thread {
             String outputLine;
             String format;
             String result;
+            Map<String, Object> parameters = null;
             byte[] bytes = null;
             if (inputLine != null) {
                 inputLine = inputLine.split(" ")[1];
+                if(inputLine.contains("?")){
+                    parameters = getParametersMap(inputLine.split("\\?")[1]);
+                    inputLine =  inputLine.split("\\?")[0];
+                    System.out.println(parameters.values());
+                    System.out.println(inputLine);
+                }
                 if (inputLine.endsWith(".html")) {
                     bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
                     result = "" + bytes.length;
@@ -63,8 +97,12 @@ public class MultiThread extends Thread {
                     result = "" + bytes.length;
                     format = "text/css";
                 } else if ((isAnnotationPresent(inputLine)) != null) {
-                    isAnnotationPresent(inputLine).invoke(null);
-                    bytes = ((String) isAnnotationPresent(inputLine).invoke(null)).getBytes();
+                    //isAnnotationPresent(inputLine).invoke(null);
+                    if (parameters != null) {
+                        bytes = ((String) isAnnotationPresent(inputLine).invoke(cl, parameters.values().toArray())).getBytes();
+                    } else{
+                        bytes = ((String) isAnnotationPresent(inputLine).invoke(null)).getBytes();
+                    }
                     result = "" + bytes.length;
                     format = "text/html";
                 } else if (inputLine.endsWith("/")  ||  inputLine.endsWith("index.html")) {
