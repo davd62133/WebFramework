@@ -8,9 +8,9 @@ import java.io.IOException;
  * Main application to put into work the framework
  */
 public class WebFrameApplication {
-    public static void run(int port, String args[]){
+    public static void run(Class<?> mainClass, int port, String args[]){
         try {
-            HttpServer.main(port, args);
+            HttpServer.main(mainClass, port, args);
         } catch (IOException e) {
             e.printStackTrace();
         }

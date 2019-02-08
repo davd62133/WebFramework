@@ -99,7 +99,7 @@ public class MultiThread extends Thread {
                 } else if ((isAnnotationPresent(inputLine)) != null) {
                     //isAnnotationPresent(inputLine).invoke(null);
                     if (parameters != null) {
-                        bytes = ((String) isAnnotationPresent(inputLine).invoke(cl, parameters.values().toArray())).getBytes();
+                        bytes = ((String) isAnnotationPresent(inputLine).invoke(cl.newInstance(), parameters.values().toArray())).getBytes();
                     } else{
                         bytes = ((String) isAnnotationPresent(inputLine).invoke(null)).getBytes();
                     }
@@ -134,7 +134,7 @@ public class MultiThread extends Thread {
             }
             socket.getOutputStream().write(rta);
             socket.close();
-        } catch (IOException e) {
+        } catch (IOException  e) {
             String outputLine = "HTTP/1.1 404 Not Found\r\n";
 
             try {
@@ -143,7 +143,7 @@ public class MultiThread extends Thread {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
