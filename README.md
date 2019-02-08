@@ -29,7 +29,7 @@ public class YourClass {
 ```
 3.The methods that use the server must be in the main class where the past code is from, they also use the annotation @WebGet.
 The annotation @WebGet can be used in a method like:
-```
+```java
 @WebGet("/<your path to app>")
 public String example(String...){
     //...
@@ -39,7 +39,7 @@ public String example(String...){
 }
 ```
 For example:
-```
+```java
 @WebGet("/hello")
 public String hola(String name){
     return "Hello" + nombre + "!";
