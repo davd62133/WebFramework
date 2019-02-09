@@ -19,7 +19,6 @@ public class HttpServer {
             System.err.println("Could not listen on port: " + port);
             System.exit(1);
         }
-        System.out.println("hola");
         Class<?> cl = mainClass;
         /**Reflections reflection = new Reflections(mainClass.getPackage().toString());
         for(Class<?> cl2 : reflection.getTypesAnnotatedWith(WebClass.class)){
@@ -29,7 +28,7 @@ public class HttpServer {
         Socket clientSocket = null;
         while (true) {
             try {
-                System.out.println("Listo para recibir ...");
+                System.out.println("Ready to receive ...");
                 clientSocket = serverSocket.accept();
             } catch (IOException e) {
                 System.err.println("Accept failed.");
