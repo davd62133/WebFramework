@@ -73,8 +73,6 @@ public class MultiThread extends Thread {
                 if(inputLine.contains("?")){
                     parameters = getParametersMap(inputLine.split("\\?")[1]);
                     inputLine =  inputLine.split("\\?")[0];
-                    System.out.println(parameters.values());
-                    System.out.println(inputLine);
                 }
                 if (inputLine.endsWith(".html")) {
                     bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
