@@ -49,10 +49,13 @@ Where, when you put in the browser http://your-ip:your-port/hello?name=David , i
 
 IMPORTANT NOTE: the methods that use the @WebGet Annotation MUST return String and all parameters Must be String
 
+##Example
+[Example](https://github.com/davd62133/Example-Web-Frame)
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE.txt)
