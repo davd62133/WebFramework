@@ -75,23 +75,23 @@ public class MultiThread extends Thread {
                     inputLine =  inputLine.split("\\?")[0];
                 }
                 if (inputLine.endsWith(".html")) {
-                    bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
+                    bytes = Files.readAllBytes(new File("./src/main/public/" + inputLine).toPath());
                     result = "" + bytes.length;
                     format = "text/html";
                 } else if (inputLine.endsWith(".png")) {
-                    bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
+                    bytes = Files.readAllBytes(new File("./src/main/public/" + inputLine).toPath());
                     result = "" + bytes.length;
                     format = "image/png";
                 } else if (inputLine.endsWith(".jpg")) {
-                    bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
+                    bytes = Files.readAllBytes(new File("./src/main/public/" + inputLine).toPath());
                     result = "" + bytes.length;
                     format = "image/jpg";
                 } else if (inputLine.endsWith(".js")) {
-                    bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
+                    bytes = Files.readAllBytes(new File("./src/main/public/" + inputLine).toPath());
                     result = "" + bytes.length;
                     format = "text/js";
                 } else if (inputLine.endsWith(".css")) {
-                    bytes = Files.readAllBytes(new File("src/main/public/" + inputLine).toPath());
+                    bytes = Files.readAllBytes(new File("./src/main/public/" + inputLine).toPath());
                     result = "" + bytes.length;
                     format = "text/css";
                 } else if ((isAnnotationPresent(inputLine)) != null) {
@@ -104,14 +104,14 @@ public class MultiThread extends Thread {
                     result = "" + bytes.length;
                     format = "text/html";
                 } else if (inputLine.endsWith("/")  ||  inputLine.endsWith("index.html")) {
-                     bytes = Files.readAllBytes(new File("src/main/public/index.html").toPath());
+                     bytes = Files.readAllBytes(new File("./src/main/public/index.html").toPath());
                      result = "" + bytes.length;
                      format = "text/html";
                 } else {
                     throw new IOException();
                 }
             } else {
-                bytes = Files.readAllBytes(new File("src/main/public/index.html").toPath());
+                bytes = Files.readAllBytes(new File("./src/main/public/index.html").toPath());
                 result = "" + bytes.length;
                 format = "text/html";
             }
@@ -119,9 +119,10 @@ public class MultiThread extends Thread {
                     + "Content-Type: "
                     + format
                     + "\r\n"
+                    +"Content-Length: "
                     + result
                     + "\r\n\r\n";
-
+            System.out.println("Entro 1");
             byte[] hByte = outputLine.getBytes();
             byte[] rta = new byte[bytes.length + hByte.length];
             for (int i = 0; i < hByte.length; i++) {
@@ -130,10 +131,14 @@ public class MultiThread extends Thread {
             for (int i = hByte.length; i < hByte.length + bytes.length; i++) {
                 rta[i] = bytes[i - hByte.length];
             }
+            System.out.println("Entro 2");
             socket.getOutputStream().write(rta);
+            System.out.println("Entro 3");
             socket.close();
+            System.out.println("Entro 4");
         } catch (IOException  e) {
-            String outputLine = "HTTP/1.1 404 Not Found\r\n";
+            e.printStackTrace();
+            String outputLine = "HTTP/1.1 404 Not Found\r\n\r\n";
 
             try {
                 socket.getOutputStream().write(outputLine.getBytes());
